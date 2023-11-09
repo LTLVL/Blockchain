@@ -16,10 +16,10 @@ describe("Test", function () {
     return { borrowYourCar, owner, otherAccount };
   }
 
-  describe("Deployment", function () {
-    it("Should return hello world", async function () {
-      const { borrowYourCar } = await loadFixture(deployFixture);
-      expect(await borrowYourCar.helloworld()).to.equal("hello world");
-    });
-  });
+  // describe("Deployment", function () {
+  //   it("Should return hello world", async function () {
+  //     const { borrowYourCar } = await loadFixture(deployFixture);
+  //     expect(await borrowYourCar.helloworld()).to.equal("hello world");
+  //   });
+  // });
 });

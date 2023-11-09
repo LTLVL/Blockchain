@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+    <meta
+            name="description"
+            content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <title>React App</title>
+</head>
+<body>
+
+
+<ul></ul>
+
+
+<div id="app">
+    <el-button type="primary">主要</el-button>
+</div>
+
+<input type="text" id="carId1">
+<button id="QueryCarInfo">QueryCarInfo</button>
+<ul></ul>
+<button id="QueryMyCars">QueryMyCars</button>
+<ul></ul>
+<button id="QueryMyBorrowCars">QueryMyBorrowCars</button>
+<ul></ul>
+<button id="QueryFreeCars">QueryFreeCars</button>
+<ul></ul>
+<button id="PickUpNFT">PickUpNFT</button>
+<ul></ul>
+<input type="text" id="carId2">
+<input type="text" id="time">
+<button id="BorrowCar">BorrowCar</button>
+
+<script type="module">
+    var web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+
+    //先授权
+    let account = await window.ethereum.enable()
+
+    console.log(account[0])
+    //连接智能合约程序
+    const BorrowYourCar = await new web3.eth.Contract([
+        {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint32",
+                    "name": "carTokenId",
+                    "type": "uint32"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "borrower",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "startTime",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "duration",
+                    "type": "uint256"
+                }
+            ],
+            "name": "CarBorrowed",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "BalanceOf",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "car",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "time",
+                    "type": "uint256"
+                }
+            ],
+            "name": "BorrowCar",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "PickUpNFT",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "car",
+                    "type": "uint256"
+                }
+            ],
+            "name": "QueryCarInfo",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "borrower",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "borrowUntil",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "QueryFreeCars",
+            "outputs": [
+                {
+                    "internalType": "uint256[]",
+                    "name": "",
+                    "type": "uint256[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "QueryMyBorrowCars",
+            "outputs": [
+                {
+                    "internalType": "uint256[]",
+                    "name": "",
+                    "type": "uint256[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "QueryMyCars",
+            "outputs": [
+                {
+                    "internalType": "uint256[]",
+                    "name": "",
+                    "type": "uint256[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "cars",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "borrower",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "borrowUntil",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "helloworld",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+        }
+    ], "0x0FE031DC54EC66507828eC83F80c3EF0f136bAF4");
+
+    console.log(BorrowYourCar)
+
+    QueryCarInfo.onclick = async function () {
+        let res = await BorrowYourCar.methods.QueryCarInfo(carId1.value).call()
+        console.log("car info:", res)
+    }
+
+    QueryMyCars.onclick = async function () {
+        let res = await BorrowYourCar.methods.QueryMyCars().call({
+            from: account[0]
+        })
+        console.log("my cars:", res)
+    }
+
+    QueryMyBorrowCars.onclick = async function () {
+        let res = await BorrowYourCar.methods.QueryMyBorrowCars().call({
+            from: account[0]
+        })
+        console.log("my borrow cars:", res)
+    }
+
+    QueryFreeCars.onclick = async function () {
+        let res = await BorrowYourCar.methods.QueryFreeCars().call({
+            from: account[0]
+        })
+        console.log("free cars:", res)
+    }
+
+    PickUpNFT.onclick = async function () {
+        let res = await BorrowYourCar.methods.PickUpNFT().send({
+            from: account[0],
+            value: 1000000000000000000
+        })
+        console.log("pick up:", res)
+    }
+
+    BorrowCar.onclick = async function () {
+        let res = await BorrowYourCar.methods.BorrowCar(carId2.value, time.value).send({
+            from: account[0],
+        })
+        console.log("car info:", res)
+    }
+
+
+</script>
+</body>
+
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {visible: false}
+        }
+    })
+</script>
+</html>
